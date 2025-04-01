@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydroponic Garden Monitor</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4CAF50',secondary:'#90CAF9'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        }
+        .sensor-card {
+            transition: all 0.3s ease;
+        }
+        .sensor-card:active {
+            transform: scale(0.98);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-[#FAFAFA] text-gray-800 h-screen">
+    <!-- Nav Bar -->
+    <div class="fixed top-0 w-full bg-white shadow-sm z-10">
+        <div class="flex items-center justify-between px-4 py-3">
+            <div class="flex items-center">
+                <h1 class="text-xl font-['Pacifico'] text-primary">logo</h1>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+                    <i class="ri-notification-3-line ri-lg"></i>
+                </div>
+                <div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+                    <i class="ri-settings-3-line ri-lg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="pt-16 pb-16 px-4">
+        <!-- Header Section -->
+        <div class="mb-6 mt-2">
+            <h1 class="text-2xl font-bold">Garden Status</h1>
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-gray-500" id="current-date">Monday, March 31, 2025</p>
+                <div class="flex items-center">
+                    <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                    <span class="text-sm text-green-600">All Systems Normal</span>
+                </div>
+            </div>
+        </div>
+        <!-- System Overview Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 mb-5">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="font-semibold">System Overview</h2>
+                <span class="text-xs text-gray-500">Last updated: Just now</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="text-center">
+                    <div class="w-10 h-10 mx-auto flex items-center justify-center bg-green-100 rounded-full mb-1">
+                        <i class="ri-water-flash-line ri-lg text-primary"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">Pump</p>
+                    <p class="text-xs font-medium">Active</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-10 h-10 mx-auto flex items-center justify-center bg-blue-100 rounded-full mb-1">
+                        <i class="ri-drop-line ri-lg text-blue-500"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">Water</p>
+                    <p class="text-xs font-medium">85%</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-10 h-10 mx-auto flex items-center justify-center bg-yellow-100 rounded-full mb-1">
+                        <i class="ri-sun-line ri-lg text-yellow-500"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">Light</p>
+                    <p class="text-xs font-medium">On (12h)</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-10 h-10 mx-auto flex items-center justify-center bg-purple-100 rounded-full mb-1">
+                        <i class="ri-cpu-line ri-lg text-purple-500"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">System</p>
+                    <p class="text-xs font-medium">Normal</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sensor Cards Grid -->
+        <div class="grid grid-cols-2 gap-4 mb-5">
+            <!-- Temperature Card -->
+            <div class="sensor-card bg-white rounded-lg shadow-sm p-4 cursor-pointer" id="temperature-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Temperature</h3>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-temp-hot-line text-red-500"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <span class="text-3xl font-semibold" id="temperature-value">24.5</span>
+                    <span class="text-lg ml-1 mb-1">°C</span>
+                </div>
+                <div class="mt-2 h-12" id="temperature-chart"></div>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-xs text-gray-500">Min: 22°C</span>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                        <span class="text-xs text-green-600">Optimal</span>
+                    </div>
+                    <span class="text-xs text-gray-500">Max: 26°C</span>
+                </div>
+            </div>
+
+            <!-- Humidity Card -->
+            <div class="sensor-card bg-white rounded-lg shadow-sm p-4 cursor-pointer" id="humidity-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Humidity</h3>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-drop-line text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <span class="text-3xl font-semibold" id="humidity-value">68</span>
+                    <span class="text-lg ml-1 mb-1">%</span>
+                </div>
+                <div class="mt-2 h-12" id="humidity-chart"></div>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-xs text-gray-500">Min: 60%</span>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                        <span class="text-xs text-green-600">Optimal</span>
+                    </div>
+                    <span class="text-xs text-gray-500">Max: 75%</span>
+                </div>
+            </div>
+
+            <!-- pH Level Card -->
+            <div class="sensor-card bg-white rounded-lg shadow-sm p-4 cursor-pointer" id="ph-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-600">pH Level</h3>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-test-tube-line text-purple-500"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <span class="text-3xl font-semibold" id="ph-value">6.2</span>
+                </div>
+                <div class="mt-3 relative h-4 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="absolute inset-0 flex">
+                        <div class="w-1/7 bg-red-500"></div>
+                        <div class="w-1/7 bg-orange-500"></div>
+                        <div class="w-1/7 bg-yellow-500"></div>
+                        <div class="w-1/7 bg-green-500"></div>
+                        <div class="w-1/7 bg-teal-500"></div>
+                        <div class="w-1/7 bg-blue-500"></div>
+                        <div class="w-1/7 bg-purple-500"></div>
+                    </div>
+                    <div class="absolute h-full w-1 bg-black" style="left: 44.3%; transform: translateX(-50%)"></div>
+                </div>
+                <div class="flex justify-between mt-1 text-xs text-gray-500">
+                    <span>0</span>
+                    <span>7</span>
+                    <span>14</span>
+                </div>
+                <div class="flex items-center justify-center mt-2">
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                        <span class="text-xs text-green-600">Optimal (5.5-6.5)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nutrient Levels Card -->
+            <div class="sensor-card bg-white rounded-lg shadow-sm p-4 cursor-pointer" id="nutrient-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Nutrient Levels</h3>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-seedling-line text-green-500"></i>
+                    </div>
+                </div>
+                <div class="space-y-2 mt-1">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Nitrogen (N)</span>
+                            <span class="font-medium">210 ppm</span>
+                        </div>
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Phosphorus (P)</span>
+                            <span class="font-medium">45 ppm</span>
+                        </div>
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-500" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Potassium (K)</span>
+                            <span class="font-medium">180 ppm</span>
+                        </div>
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-purple-500" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center mt-3">
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                        <span class="text-xs text-green-600">All levels optimal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plants Status -->
+        <div class="mb-5">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="font-semibold">Plants Status</h2>
+                <button class="text-xs text-primary flex items-center cursor-pointer">
+                    View all
+                    <i class="ri-arrow-right-s-line ml-1"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-white rounded-lg shadow-sm p-3 flex items-center cursor-pointer">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden mr-3">
+                        <img src="https://public.readdy.ai/ai/img_res/fcc1e7417cc76a36d7beb2499b5fe106.jpg" alt="Basil" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium">Basil</h3>
+                            <div class="flex items-center">
+                                <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                                <span class="text-xs text-green-600">Healthy</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mt-1">
+                            <span>Day 18</span>
+                            <span class="mx-2">•</span>
+                            <span>Growth: 12.5 cm</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-3 flex items-center cursor-pointer">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden mr-3">
+                        <img src="https://public.readdy.ai/ai/img_res/6101eb90b43777714514a370391e307d.jpg" alt="Lettuce" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium">Lettuce</h3>
+                            <div class="flex items-center">
+                                <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                                <span class="text-xs text-green-600">Healthy</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mt-1">
+                            <span>Day 14</span>
+                            <span class="mx-2">•</span>
+                            <span>Growth: 8.2 cm</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-3 flex items-center cursor-pointer">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden mr-3">
+                        <img src="https://public.readdy.ai/ai/img_res/907db84550860be0ab2a03028daa1d88.jpg" alt="Mint" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium">Mint</h3>
+                            <div class="flex items-center">
+                                <span class="inline-block w-2 h-2 rounded-full bg-yellow-500 mr-1"></span>
+                                <span class="text-xs text-yellow-600">Needs attention</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mt-1">
+                            <span>Day 21</span>
+                            <span class="mx-2">•</span>
+                            <span>Growth: 10.8 cm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="mb-5">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="font-semibold">Recent Activities</h2>
+                <button class="text-xs text-primary flex items-center cursor-pointer">
+                    View all
+                    <i class="ri-arrow-right-s-line ml-1"></i>
+                </button>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="space-y-3">
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mt-0.5 mr-3 flex-shrink-0">
+                            <i class="ri-water-flash-line text-blue-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm">Water pump activated</p>
+                            <p class="text-xs text-gray-500">Today, 10:45 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full mt-0.5 mr-3 flex-shrink-0">
+                            <i class="ri-seedling-line text-green-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm">Nutrient solution added</p>
+                            <p class="text-xs text-gray-500">Today, 09:30 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full mt-0.5 mr-3 flex-shrink-0">
+                            <i class="ri-sun-line text-yellow-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm">Grow lights turned on</p>
+                            <p class="text-xs text-gray-500">Today, 06:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-full mt-0.5 mr-3 flex-shrink-0">
+                            <i class="ri-test-tube-line text-purple-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm">pH level adjusted</p>
+                            <p class="text-xs text-gray-500">Yesterday, 08:15 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fixed right-4 bottom-20 z-10">
+        <button class="w-12 h-12 rounded-full bg-primary shadow-lg flex items-center justify-center cursor-pointer">
+            <i class="ri-add-line ri-xl text-white"></i>
+        </button>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-10">
+        <div class="grid grid-cols-4 h-14">
+            <div class="flex flex-col items-center justify-center cursor-pointer text-primary">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-dashboard-line"></i>
+                </div>
+                <span class="text-xs mt-0.5">Dashboard</span>
+            </div>
+            <div class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-history-line"></i>
+                </div>
+                <span class="text-xs mt-0.5">History</span>
+            </div>
+            <div class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-settings-3-line"></i>
+                </div>
+                <span class="text-xs mt-0.5">Settings</span>
+            </div>
+            <div class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-notification-3-line"></i>
+                </div>
+                <span class="text-xs mt-0.5">Alerts</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data
+        const mockData = {
+            temperature: {
+                current: 24.5,
+                history: [23.8, 24.0, 24.2, 24.3, 24.5, 24.6, 24.5, 24.3],
+                min: 22,
+                max: 26,
+                status: 'optimal'
+            },
+            humidity: {
+                current: 68,
+                history: [65, 66, 67, 68, 69, 68, 67, 68],
+                min: 60,
+                max: 75,
+                status: 'optimal'
+            },
+            ph: {
+                current: 6.2,
+                min: 5.5,
+                max: 6.5,
+                status: 'optimal'
+            },
+            nutrients: {
+                nitrogen: { value: 210, unit: 'ppm', percentage: 75, status: 'optimal' },
+                phosphorus: { value: 45, unit: 'ppm', percentage: 65, status: 'optimal' },
+                potassium: { value: 180, unit: 'ppm', percentage: 85, status: 'optimal' }
+            },
+            plants: [
+                { name: 'Basil', status: 'healthy', day: 18, growth: 12.5 },
+                { name: 'Lettuce', status: 'healthy', day: 14, growth: 8.2 },
+                { name: 'Mint', status: 'needs_attention', day: 21, growth: 10.8 }
+            ],
+            activities: [
+                { type: 'pump', message: 'Water pump activated', time: 'Today, 10:45 AM' },
+                { type: 'nutrient', message: 'Nutrient solution added', time: 'Today, 09:30 AM' },
+                { type: 'light', message: 'Grow lights turned on', time: 'Today, 06:00 AM' },
+                { type: 'ph', message: 'pH level adjusted', time: 'Yesterday, 08:15 PM' }
+            ]
+        };
+
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Temperature chart
+            const temperatureChart = echarts.init(document.getElementById('temperature-chart'));
+            const temperatureOption = {
+                grid: { top: 0, right: 0, bottom: 0, left: 0 },
+                xAxis: {
+                    type: 'category',
+                    show: false,
+                    data: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h']
+                },
+                yAxis: { type: 'value', show: false },
+                series: [{
+                    data: mockData.temperature.history,
+                    type: 'line',
+                    showSymbol: false,
+                    smooth: true,
+                    lineStyle: { width: 2, color: '#FF7043' },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(255, 112, 67, 0.3)' },
+                                { offset: 1, color: 'rgba(255, 112, 67, 0.05)' }
+                            ]
+                        }
+                    }
+                }]
+            };
+            temperatureChart.setOption(temperatureOption);
+            // Humidity chart
+            const humidityChart = echarts.init(document.getElementById('humidity-chart'));
+            const humidityOption = {
+                grid: { top: 0, right: 0, bottom: 0, left: 0 },
+                xAxis: {
+                    type: 'category',
+                    show: false,
+                    data: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h']
+                },
+                yAxis: { type: 'value', show: false },
+                series: [{
+                    data: mockData.humidity.history,
+                    type: 'line',
+                    showSymbol: false,
+                    smooth: true,
+                    lineStyle: { width: 2, color: '#2196F3' },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(33, 150, 243, 0.3)' },
+                                { offset: 1, color: 'rgba(33, 150, 243, 0.05)' }
+                            ]
+                        }
+                    }
+                }]
+            };
+            humidityChart.setOption(humidityOption);
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                temperatureChart.resize();
+                humidityChart.resize();
+            });
+
+            // Card click events
+            document.getElementById('temperature-card').addEventListener('click', function() {
+                showDetailModal('Temperature', `${mockData.temperature.current}°C`, 'Optimal range: 22°C - 26°C');
+            });
+            document.getElementById('humidity-card').addEventListener('click', function() {
+                showDetailModal('Humidity', `${mockData.humidity.current}%`, 'Optimal range: 60% - 75%');
+            });
+
+            document.getElementById('ph-card').addEventListener('click', function() {
+                showDetailModal('pH Level', mockData.ph.current, 'Optimal range: 5.5 - 6.5');
+            });
+
+            document.getElementById('nutrient-card').addEventListener('click', function() {
+                showDetailModal('Nutrient Levels', 'All levels optimal', 'N: 210 ppm, P: 45 ppm, K: 180 ppm');
+            });
+        });
+
+        // Detail modal function
+        function showDetailModal(title, value, description) {
+            // Create modal container
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+            
+            // Create backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'absolute inset-0 bg-black bg-opacity-50';
+            backdrop.addEventListener('click', () => modal.remove());
+            
+            // Create modal content
+            const content = document.createElement('div');
+            content.className = 'bg-white rounded-lg shadow-lg w-full max-w-xs relative z-10 p-5';
+            
+            // Create close button
+            const closeButton = document.createElement('button');
+            closeButton.className = 'absolute top-3 right-3 text-gray-500';
+            closeButton.innerHTML = '<i class="ri-close-line ri-lg"></i>';
+            closeButton.addEventListener('click', () => modal.remove());
+            
+            // Create content
+            content.innerHTML = `
+                <h3 class="text-lg font-semibold mb-3">${title}</h3>
+                <div class="text-center my-5">
+                    <span class="text-4xl font-bold text-primary">${value}</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">${description}</p>
+                <div class="flex justify-end">
+                    <button class="bg-primary text-white px-4 py-2 rounded-button">Close</button>
+                </div>
+            `;
+            
+            // Add close button to content
+            content.appendChild(closeButton);
+            
+            // Add content and backdrop to modal
+            modal.appendChild(backdrop);
+            modal.appendChild(content);
+            
+            // Add modal to body
+            document.body.appendChild(modal);
+            
+            // Add event listener to close button
+            content.querySelector('button').addEventListener('click', () => modal.remove());
+        }
+    </script>
+</body>
+</html>
