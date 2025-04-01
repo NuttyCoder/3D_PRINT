@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add New Item</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#34C759',secondary:'#5AC8FA'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  background-color: #FAFAFA;
+}
+.dark body {
+  background-color: #121212;
+  color: #E5E5E5;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+</style>
+</head>
+<body class="bg-[#FAFAFA] text-gray-800">
+<!-- Nav Bar -->
+<nav class="fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex items-center justify-between">
+  <div class="flex items-center">
+    <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e" data-readdy="true" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 cursor-pointer">
+      <i class="ri-arrow-left-s-line text-gray-600"></i>
+    </a>
+    <span class="ml-3 text-lg font-medium">Add New Item</span>
+  </div>
+  <div class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 cursor-pointer" id="close-button">
+    <i class="ri-close-line text-gray-600"></i>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="pt-16 pb-24 px-4">
+  <!-- Tab Navigation -->
+  <div class="flex bg-gray-100 rounded-full p-1 mb-6 mt-4">
+    <button class="tab-button flex-1 py-2 px-4 text-sm font-medium rounded-full bg-primary text-white" data-tab="plant">
+      Add Plant
+    </button>
+    <button class="tab-button flex-1 py-2 px-4 text-sm font-medium rounded-full text-gray-600" data-tab="sensor">
+      Add Sensor
+    </button>
+    <button class="tab-button flex-1 py-2 px-4 text-sm font-medium rounded-full text-gray-600" data-tab="task">
+      Add Task
+    </button>
+  </div>
+
+  <!-- Add Plant Form -->
+  <div id="plant-tab" class="tab-content active">
+    <div class="bg-white rounded-lg shadow-sm p-5 mb-4">
+      <div class="mb-4">
+        <label for="plant-type" class="block text-sm font-medium text-gray-700 mb-1">Plant Type</label>
+        <div class="relative">
+          <select id="plant-type" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="" disabled selected>Select plant type</option>
+            <option value="basil">Basil</option>
+            <option value="lettuce">Lettuce</option>
+            <option value="mint">Mint</option>
+            <option value="spinach">Spinach</option>
+            <option value="kale">Kale</option>
+            <option value="cilantro">Cilantro</option>
+            <option value="parsley">Parsley</option>
+            <option value="strawberry">Strawberry</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="start-date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+        <div class="relative">
+          <input type="date" id="start-date" value="2025-04-01" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-calendar-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="position" class="block text-sm font-medium text-gray-700 mb-1">Position/Slot</label>
+        <div class="grid grid-cols-4 gap-2">
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 1</span>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 2</span>
+          </div>
+          <div class="bg-primary bg-opacity-10 border border-primary rounded p-3 text-center cursor-pointer">
+            <span class="text-sm text-primary">Slot 3</span>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 4</span>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 5</span>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 6</span>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 7</span>
+          </div>
+          <div class="bg-gray-50 border border-gray-200 rounded p-3 text-center cursor-pointer hover:bg-gray-100 hover:border-primary">
+            <span class="text-sm">Slot 8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="plant-notes" class="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
+        <textarea id="plant-notes" rows="3" placeholder="Add any additional information about this plant" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+      </div>
+
+      <div class="flex items-center mb-4">
+        <div class="w-6 h-6 flex items-center justify-center mr-2">
+          <i class="ri-information-line text-secondary"></i>
+        </div>
+        <p class="text-xs text-gray-500">The system will automatically set up optimal growing conditions based on the plant type you select.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+      <h3 class="text-sm font-medium text-gray-700 mb-3">Growth Cycle Settings</h3>
+      
+      <div class="mb-4">
+        <label for="light-cycle" class="block text-xs text-gray-500 mb-1">Light Cycle (hours/day)</label>
+        <input type="range" id="light-cycle" min="8" max="16" value="12" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+        <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <span>8h</span>
+          <span>12h</span>
+          <span>16h</span>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="nutrient-level" class="block text-xs text-gray-500 mb-1">Nutrient Level</label>
+        <div class="relative">
+          <select id="nutrient-level" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="low">Low (Seedling Stage)</option>
+            <option value="medium" selected>Medium (Vegetative Stage)</option>
+            <option value="high">High (Flowering/Fruiting Stage)</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Sensor Form -->
+  <div id="sensor-tab" class="tab-content">
+    <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+      <div class="mb-4">
+        <label for="sensor-type" class="block text-sm font-medium text-gray-700 mb-1">Sensor Type</label>
+        <div class="relative">
+          <select id="sensor-type" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="" disabled selected>Select sensor type</option>
+            <option value="temperature">Temperature Sensor</option>
+            <option value="humidity">Humidity Sensor</option>
+            <option value="ph">pH Sensor</option>
+            <option value="ec">EC/TDS Sensor</option>
+            <option value="water-level">Water Level Sensor</option>
+            <option value="light">Light Sensor</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="sensor-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+        <div class="relative">
+          <select id="sensor-location" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="" disabled selected>Select location</option>
+            <option value="system">Main System</option>
+            <option value="reservoir">Water Reservoir</option>
+            <option value="nutrient">Nutrient Tank</option>
+            <option value="plant-1">Plant Slot 1 (Basil)</option>
+            <option value="plant-2">Plant Slot 2 (Lettuce)</option>
+            <option value="plant-3">Plant Slot 3 (Empty)</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="sensor-id" class="block text-sm font-medium text-gray-700 mb-1">Sensor ID</label>
+        <input type="text" id="sensor-id" placeholder="e.g., TMP-001" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+      <h3 class="text-sm font-medium text-gray-700 mb-3">Sensor Settings</h3>
+      
+      <div class="mb-4">
+        <label class="flex items-center justify-between cursor-pointer">
+          <span class="text-sm text-gray-700">Enable Notifications</span>
+          <div class="relative">
+            <input type="checkbox" class="sr-only" checked>
+            <div class="block bg-gray-200 w-12 h-6 rounded-full"></div>
+            <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition transform translate-x-6"></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="mb-4">
+        <label class="flex items-center justify-between cursor-pointer">
+          <span class="text-sm text-gray-700">Auto Calibration</span>
+          <div class="relative">
+            <input type="checkbox" class="sr-only">
+            <div class="block bg-gray-200 w-12 h-6 rounded-full"></div>
+            <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="mb-4">
+        <label for="reading-interval" class="block text-xs text-gray-500 mb-1">Reading Interval (minutes)</label>
+        <div class="relative">
+          <select id="reading-interval" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="1">1 minute</option>
+            <option value="5" selected>5 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-6 h-6 flex items-center justify-center mr-2">
+          <i class="ri-information-line text-secondary"></i>
+        </div>
+        <p class="text-xs text-gray-500">Make sure your sensor is powered on and within range before adding it to the system.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Task Form -->
+  <div id="task-tab" class="tab-content">
+    <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+      <div class="mb-4">
+        <label for="task-type" class="block text-sm font-medium text-gray-700 mb-1">Task Type</label>
+        <div class="relative">
+          <select id="task-type" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="" disabled selected>Select task type</option>
+            <option value="maintenance">System Maintenance</option>
+            <option value="harvesting">Harvesting</option>
+            <option value="nutrient">Nutrient Change</option>
+            <option value="water">Water Change</option>
+            <option value="cleaning">Cleaning</option>
+            <option value="inspection">Inspection</option>
+            <option value="other">Other</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="task-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+        <textarea id="task-description" rows="3" placeholder="Describe the task in detail" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Schedule Type</label>
+        <div class="flex space-x-3 mb-3">
+          <div class="flex-1">
+            <input type="radio" id="one-time" name="schedule-type" value="one-time" class="hidden" checked>
+            <label for="one-time" class="flex items-center justify-center p-3 bg-primary bg-opacity-10 border border-primary rounded text-sm text-primary font-medium cursor-pointer">
+              One-time
+            </label>
+          </div>
+          <div class="flex-1">
+            <input type="radio" id="recurring" name="schedule-type" value="recurring" class="hidden">
+            <label for="recurring" class="flex items-center justify-center p-3 bg-gray-50 border border-gray-200 rounded text-sm text-gray-700 font-medium cursor-pointer">
+              Recurring
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div id="one-time-options" class="mb-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="task-date" class="block text-xs text-gray-500 mb-1">Date</label>
+            <div class="relative">
+              <input type="date" id="task-date" value="2025-04-05" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="ri-calendar-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="task-time" class="block text-xs text-gray-500 mb-1">Time</label>
+            <div class="relative">
+              <input type="time" id="task-time" value="09:00" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="ri-time-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="recurring-options" class="mb-4 hidden">
+        <div class="mb-3">
+          <label for="repeat-frequency" class="block text-xs text-gray-500 mb-1">Repeat Frequency</label>
+          <div class="relative">
+            <select id="repeat-frequency" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="daily">Daily</option>
+              <option value="weekly" selected>Weekly</option>
+              <option value="biweekly">Every 2 weeks</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <i class="ri-arrow-down-s-line text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3" id="weekly-options">
+          <label class="block text-xs text-gray-500 mb-2">Repeat On</label>
+          <div class="grid grid-cols-7 gap-1">
+            <div class="text-center">
+              <input type="checkbox" id="day-sun" class="hidden">
+              <label for="day-sun" class="block w-8 h-8 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xs cursor-pointer">
+                S
+              </label>
+            </div>
+            <div class="text-center">
+              <input type="checkbox" id="day-mon" class="hidden" checked>
+              <label for="day-mon" class="block w-8 h-8 rounded-full bg-primary bg-opacity-10 border border-primary flex items-center justify-center text-xs text-primary cursor-pointer">
+                M
+              </label>
+            </div>
+            <div class="text-center">
+              <input type="checkbox" id="day-tue" class="hidden" checked>
+              <label for="day-tue" class="block w-8 h-8 rounded-full bg-primary bg-opacity-10 border border-primary flex items-center justify-center text-xs text-primary cursor-pointer">
+                T
+              </label>
+            </div>
+            <div class="text-center">
+              <input type="checkbox" id="day-wed" class="hidden">
+              <label for="day-wed" class="block w-8 h-8 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xs cursor-pointer">
+                W
+              </label>
+            </div>
+            <div class="text-center">
+              <input type="checkbox" id="day-thu" class="hidden">
+              <label for="day-thu" class="block w-8 h-8 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xs cursor-pointer">
+                T
+              </label>
+            </div>
+            <div class="text-center">
+              <input type="checkbox" id="day-fri" class="hidden" checked>
+              <label for="day-fri" class="block w-8 h-8 rounded-full bg-primary bg-opacity-10 border border-primary flex items-center justify-center text-xs text-primary cursor-pointer">
+                F
+              </label>
+            </div>
+            <div class="text-center">
+              <input type="checkbox" id="day-sat" class="hidden">
+              <label for="day-sat" class="block w-8 h-8 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xs cursor-pointer">
+                S
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="recurring-time" class="block text-xs text-gray-500 mb-1">Time</label>
+            <div class="relative">
+              <input type="time" id="recurring-time" value="09:00" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="ri-time-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="end-date" class="block text-xs text-gray-500 mb-1">End Date (Optional)</label>
+            <div class="relative">
+              <input type="date" id="end-date" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="ri-calendar-line text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="priority" class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+        <div class="relative">
+          <select id="priority" class="w-full p-3 bg-gray-50 border border-gray-200 rounded text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="flex items-center cursor-pointer">
+          <div class="relative">
+            <input type="checkbox" class="sr-only" checked>
+            <div class="block bg-gray-200 w-5 h-5 rounded"></div>
+            <div class="dot absolute left-0.5 top-0.5 bg-primary w-4 h-4 rounded flex items-center justify-center">
+              <i class="ri-check-line text-white text-xs"></i>
+            </div>
+          </div>
+          <span class="text-sm text-gray-700 ml-2">Send notification reminder</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4">
+    <button class="w-full py-3 bg-primary text-white font-medium rounded-button mb-2 cursor-pointer">
+      Add Item
+    </button>
+    <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e" data-readdy="true" class="block w-full py-3 text-center text-gray-500 font-medium cursor-pointer">
+      Cancel
+    </a>
+  </div>
+</main>
+
+<script>
+// Tab switching functionality
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Remove active class from all buttons and contents
+    tabButtons.forEach(btn => {
+      btn.classList.remove('bg-primary', 'text-white');
+      btn.classList.add('text-gray-600');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // Add active class to clicked button and corresponding content
+    button.classList.add('bg-primary', 'text-white');
+    button.classList.remove('text-gray-600');
+    const tabId = button.getAttribute('data-tab');
+    document.getElementById(`${tabId}-tab`).classList.add('active');
+  });
+});
+
+// Schedule type toggle
+const oneTimeRadio = document.getElementById('one-time');
+const recurringRadio = document.getElementById('recurring');
+const oneTimeOptions = document.getElementById('one-time-options');
+const recurringOptions = document.getElementById('recurring-options');
+oneTimeRadio.addEventListener('change', function() {
+  if (this.checked) {
+    oneTimeOptions.classList.remove('hidden');
+    recurringOptions.classList.add('hidden');
+    
+    // Reset one-time label styling
+    document.querySelector('label[for="one-time"]').classList.remove('bg-gray-50', 'border-gray-200', 'text-gray-700');
+    document.querySelector('label[for="one-time"]').classList.add('bg-primary', 'bg-opacity-10', 'border-primary', 'text-primary');
+    
+    // Reset recurring label styling
+    document.querySelector('label[for="recurring"]').classList.remove('bg-primary', 'bg-opacity-10', 'border-primary', 'text-primary');
+    document.querySelector('label[for="recurring"]').classList.add('bg-gray-50', 'border-gray-200', 'text-gray-700');
+  }
+});
+
+recurringRadio.addEventListener('change', function() {
+  if (this.checked) {
+    oneTimeOptions.classList.add('hidden');
+    recurringOptions.classList.remove('hidden');
+    
+    // Reset recurring label styling
+    document.querySelector('label[for="recurring"]').classList.remove('bg-gray-50', 'border-gray-200', 'text-gray-700');
+    document.querySelector('label[for="recurring"]').classList.add('bg-primary', 'bg-opacity-10', 'border-primary', 'text-primary');
+    
+    // Reset one-time label styling
+    document.querySelector('label[for="one-time"]').classList.remove('bg-primary', 'bg-opacity-10', 'border-primary', 'text-primary');
+    document.querySelector('label[for="one-time"]').classList.add('bg-gray-50', 'border-gray-200', 'text-gray-700');
+  }
+});
+
+// Toggle switch functionality
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+  if (checkbox.parentElement && checkbox.parentElement.classList.contains('relative') && checkbox.parentElement.querySelector('.dot')) {
+    checkbox.addEventListener('change', function() {
+      const dot = this.parentElement.querySelector('.dot');
+      if (this.checked) {
+        dot.classList.add('transform', 'translate-x-6');
+      } else {
+        dot.classList.remove('transform', 'translate-x-6');
+      }
+    });
+  }
+});
+
+// Day selection in weekly options
+document.querySelectorAll('#weekly-options input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', function() {
+    const label = document.querySelector(`label[for="${this.id}"]`);
+    if (this.checked) {
+      label.classList.remove('bg-gray-50', 'border-gray-200', 'text-gray-800');
+      label.classList.add('bg-primary', 'bg-opacity-10', 'border-primary', 'text-primary');
+    } else {
+      label.classList.remove('bg-primary', 'bg-opacity-10', 'border-primary', 'text-primary');
+      label.classList.add('bg-gray-50', 'border-gray-200', 'text-gray-800');
+    }
+  });
+});
+
+// Close button functionality
+document.getElementById('close-button').addEventListener('click', function() {
+  window.location.href = "https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e";
+});
+
+// Position/Slot selection
+document.querySelectorAll('.grid.grid-cols-4 > div').forEach(slot => {
+  slot.addEventListener('click', function() {
+    // Remove selected class from all slots
+    document.querySelectorAll('.grid.grid-cols-4 > div').forEach(s => {
+      s.classList.remove('bg-primary', 'bg-opacity-10', 'border-primary');
+      s.classList.add('bg-gray-50', 'border-gray-200');
+      const span = s.querySelector('span');
+      if (span) {
+        span.classList.remove('text-primary');
+        span.classList.add('text-gray-800');
+      }
+    });
+    
+    // Add selected class to clicked slot
+    this.classList.remove('bg-gray-50', 'border-gray-200');
+    this.classList.add('bg-primary', 'bg-opacity-10', 'border-primary');
+    const span = this.querySelector('span');
+    if (span) {
+      span.classList.remove('text-gray-800');
+      span.classList.add('text-primary');
+    }
+  });
+});
+</script>
+</body>
+</html>
