@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hydroponic Garden Settings</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4CAF50',secondary:'#90CAF9'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #4CAF50;
+}
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #4CAF50;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+</style>
+</head>
+<body class="bg-[#FAFAFA] text-gray-800 h-screen">
+<!-- Nav Bar -->
+<div class="fixed top-0 w-full bg-white shadow-sm z-10">
+  <div class="flex items-center justify-between px-4 py-3">
+    <div class="flex items-center">
+      <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e" data-readdy="true" class="w-8 h-8 flex items-center justify-center cursor-pointer mr-2">
+        <i class="ri-arrow-left-s-line ri-lg"></i>
+      </a>
+      <h1 class="text-xl font-['Pacifico'] text-primary">logo</h1>
+    </div>
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+        <i class="ri-notification-3-line ri-lg"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="pt-16 pb-20 px-4">
+  <!-- Header Section -->
+  <div class="mb-4 mt-2">
+    <h1 class="text-2xl font-bold">Settings</h1>
+    <p class="text-sm text-gray-500">Configure your hydroponic garden system</p>
+  </div>
+
+  <!-- Settings Tabs -->
+  <div class="mb-4 overflow-x-auto whitespace-nowrap pb-2">
+    <div class="inline-flex space-x-3">
+      <button class="tab-button flex flex-col items-center justify-center p-2 rounded-lg bg-primary bg-opacity-10 min-w-16 cursor-pointer active" data-tab="light">
+        <div class="w-6 h-6 flex items-center justify-center text-primary">
+          <i class="ri-sun-line"></i>
+        </div>
+        <span class="text-xs mt-1 text-primary font-medium">Light</span>
+      </button>
+      <button class="tab-button flex flex-col items-center justify-center p-2 rounded-lg min-w-16 cursor-pointer" data-tab="water">
+        <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+          <i class="ri-water-flash-line"></i>
+        </div>
+        <span class="text-xs mt-1 text-gray-600">Water & Pump</span>
+      </button>
+      <button class="tab-button flex flex-col items-center justify-center p-2 rounded-lg min-w-16 cursor-pointer" data-tab="nutrients">
+        <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+          <i class="ri-seedling-line"></i>
+        </div>
+        <span class="text-xs mt-1 text-gray-600">Nutrients</span>
+      </button>
+      <button class="tab-button flex flex-col items-center justify-center p-2 rounded-lg min-w-16 cursor-pointer" data-tab="notifications">
+        <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+          <i class="ri-notification-3-line"></i>
+        </div>
+        <span class="text-xs mt-1 text-gray-600">Notifications</span>
+      </button>
+      <button class="tab-button flex flex-col items-center justify-center p-2 rounded-lg min-w-16 cursor-pointer" data-tab="system">
+        <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+          <i class="ri-settings-3-line"></i>
+        </div>
+        <span class="text-xs mt-1 text-gray-600">System</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Light Settings Tab -->
+  <div id="light-tab" class="tab-content active">
+    <div class="space-y-4">
+      <!-- Light Schedule Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Light Schedule</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Light On Time</label>
+            <input type="time" class="border rounded-button p-2 text-sm w-32 text-right" value="06:00">
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Light Off Time</label>
+            <input type="time" class="border rounded-button p-2 text-sm w-32 text-right" value="18:00">
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Auto Light Cycle</label>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="auto-light" id="auto-light" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="auto-light" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Light Intensity Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Light Intensity</h2>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm text-gray-600">Current: 75%</span>
+            <span class="text-sm font-medium text-primary">Optimal</span>
+          </div>
+          <input type="range" min="0" max="100" value="75" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer" id="light-intensity">
+          <div class="flex justify-between text-xs text-gray-500">
+            <span>Low</span>
+            <span>Medium</span>
+            <span>High</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Light Effects Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Light Effects</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Sunrise Effect</p>
+              <p class="text-xs text-gray-500">Gradually increase light intensity</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="sunrise" id="sunrise" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="sunrise" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Sunset Effect</p>
+              <p class="text-xs text-gray-500">Gradually decrease light intensity</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="sunset" id="sunset" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="sunset" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Blue Light Mode</p>
+              <p class="text-xs text-gray-500">Optimize for vegetative growth</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="blue-light" id="blue-light" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="blue-light" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Water & Pump Settings Tab -->
+  <div id="water-tab" class="tab-content">
+    <div class="space-y-4">
+      <!-- Pump Schedule Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Pump Schedule</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Pump Frequency</label>
+            <div class="relative w-32">
+              <select class="appearance-none border rounded-button p-2 w-full text-sm pr-8 text-right">
+                <option>Every hour</option>
+                <option selected>Every 2 hours</option>
+                <option>Every 3 hours</option>
+                <option>Every 4 hours</option>
+                <option>Custom</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Pump Duration</label>
+            <div class="flex items-center">
+              <input type="number" class="border rounded-button p-2 text-sm w-16 text-right" value="5">
+              <span class="ml-2 text-sm text-gray-600">minutes</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Auto Pump Control</label>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="auto-pump" id="auto-pump" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="auto-pump" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water Level Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Water Level Settings</h2>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm text-gray-600">Low Water Warning</span>
+            <span class="text-sm font-medium">25%</span>
+          </div>
+          <input type="range" min="10" max="40" value="25" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer" id="water-level">
+          <div class="flex justify-between text-xs text-gray-500">
+            <span>10%</span>
+            <span>25%</span>
+            <span>40%</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div>
+              <p class="text-sm">Auto-Refill Alert</p>
+              <p class="text-xs text-gray-500">Notify when water level is low</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="auto-refill" id="auto-refill" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="auto-refill" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water Temperature Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Water Temperature</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Ideal Temperature</label>
+            <div class="flex items-center">
+              <input type="number" class="border rounded-button p-2 text-sm w-16 text-right" value="22">
+              <span class="ml-2 text-sm text-gray-600">°C</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Temperature Range</label>
+            <div class="flex items-center">
+              <span class="text-sm text-gray-600">±</span>
+              <input type="number" class="border rounded-button p-2 text-sm w-12 text-right ml-1" value="2">
+              <span class="ml-2 text-sm text-gray-600">°C</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Temperature Alerts</p>
+              <p class="text-xs text-gray-500">Alert when out of range</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="temp-alert" id="temp-alert" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="temp-alert" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nutrients Settings Tab -->
+  <div id="nutrients-tab" class="tab-content">
+    <div class="space-y-4">
+      <!-- Nutrient Solution Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Nutrient Solution</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Solution Type</label>
+            <div class="relative w-40">
+              <select class="appearance-none border rounded-button p-2 w-full text-sm pr-8 text-right">
+                <option selected>General Purpose</option>
+                <option>Leafy Greens</option>
+                <option>Fruiting Plants</option>
+                <option>Herbs</option>
+                <option>Custom</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Dosing Schedule</label>
+            <div class="relative w-40">
+              <select class="appearance-none border rounded-button p-2 w-full text-sm pr-8 text-right">
+                <option>Daily</option>
+                <option selected>Every 3 days</option>
+                <option>Weekly</option>
+                <option>Custom</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- NPK Levels Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">NPK Levels</h2>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Nitrogen (N)</span>
+              <span class="font-medium">210 ppm</span>
+            </div>
+            <input type="range" min="150" max="250" value="210" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer" id="nitrogen-level">
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Phosphorus (P)</span>
+              <span class="font-medium">45 ppm</span>
+            </div>
+            <input type="range" min="30" max="60" value="45" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer" id="phosphorus-level">
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Potassium (K)</span>
+              <span class="font-medium">180 ppm</span>
+            </div>
+            <input type="range" min="150" max="220" value="180" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer" id="potassium-level">
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <button class="text-xs text-primary flex items-center cursor-pointer">
+              Reset to recommended
+              <i class="ri-refresh-line ml-1"></i>
+            </button>
+            <div class="flex items-center">
+              <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+              <span class="text-xs text-green-600">Optimal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- pH Control Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">pH Control</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Target pH Level</label>
+            <input type="number" step="0.1" class="border rounded-button p-2 text-sm w-16 text-right" value="6.2">
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Acceptable Range</label>
+            <div class="flex items-center">
+              <span class="text-sm text-gray-600">±</span>
+              <input type="number" step="0.1" class="border rounded-button p-2 text-sm w-12 text-right ml-1" value="0.3">
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Auto pH Adjustment</p>
+              <p class="text-xs text-gray-500">Automatically balance pH levels</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="auto-ph" id="auto-ph" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="auto-ph" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications Settings Tab -->
+  <div id="notifications-tab" class="tab-content">
+    <div class="space-y-4">
+      <!-- Alert Types Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Alert Types</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">System Alerts</p>
+              <p class="text-xs text-gray-500">Hardware issues, power problems</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="system-alerts" id="system-alerts" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="system-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Environmental Alerts</p>
+              <p class="text-xs text-gray-500">Temperature, humidity, light issues</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="env-alerts" id="env-alerts" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="env-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Water & Nutrient Alerts</p>
+              <p class="text-xs text-gray-500">pH, nutrient levels, water level</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="water-alerts" id="water-alerts" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="water-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Plant Health Alerts</p>
+              <p class="text-xs text-gray-500">Growth issues, potential diseases</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="plant-alerts" id="plant-alerts" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="plant-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Maintenance Reminders</p>
+              <p class="text-xs text-gray-500">Cleaning, part replacements</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="maintenance-alerts" id="maintenance-alerts" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="maintenance-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Methods Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Notification Methods</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">In-App Notifications</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="in-app" id="in-app" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="in-app" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Push Notifications</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="push" id="push" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="push" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Email Notifications</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="email" id="email" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="email" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">SMS Notifications</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="sms" id="sms" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="sms" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiet Hours Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Quiet Hours</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Enable Quiet Hours</p>
+              <p class="text-xs text-gray-500">Silence non-critical alerts</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="quiet-hours" id="quiet-hours" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="quiet-hours" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">Start Time</label>
+            <input type="time" class="border rounded-button p-2 text-sm w-32 text-right" value="22:00">
+          </div>
+          <div class="flex justify-between items-center">
+            <label class="text-sm text-gray-600">End Time</label>
+            <input type="time" class="border rounded-button p-2 text-sm w-32 text-right" value="07:00">
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Allow Critical Alerts</p>
+              <p class="text-xs text-gray-500">System failures, water leaks</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="critical-alerts" id="critical-alerts" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="critical-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Settings Tab -->
+  <div id="system-tab" class="tab-content">
+    <div class="space-y-4">
+      <!-- Sensor Calibration Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Sensor Calibration</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Temperature Sensor</p>
+              <p class="text-xs text-gray-500">Last calibrated: March 15, 2025</p>
+            </div>
+            <button class="px-3 py-1.5 bg-primary bg-opacity-10 text-primary text-xs rounded-button cursor-pointer">Calibrate</button>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">pH Sensor</p>
+              <p class="text-xs text-gray-500">Last calibrated: March 28, 2025</p>
+            </div>
+            <button class="px-3 py-1.5 bg-primary bg-opacity-10 text-primary text-xs rounded-button cursor-pointer">Calibrate</button>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">EC/TDS Sensor</p>
+              <p class="text-xs text-gray-500">Last calibrated: March 20, 2025</p>
+            </div>
+            <button class="px-3 py-1.5 bg-primary bg-opacity-10 text-primary text-xs rounded-button cursor-pointer">Calibrate</button>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Water Level Sensor</p>
+              <p class="text-xs text-gray-500">Last calibrated: March 10, 2025</p>
+            </div>
+            <button class="px-3 py-1.5 bg-primary bg-opacity-10 text-primary text-xs rounded-button cursor-pointer">Calibrate</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Management Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">Data Management</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Data Logging Interval</p>
+              <p class="text-xs text-gray-500">How often to record sensor data</p>
+            </div>
+            <div class="relative w-32">
+              <select class="appearance-none border rounded-button p-2 w-full text-sm pr-8 text-right">
+                <option>1 minute</option>
+                <option>5 minutes</option>
+                <option selected>15 minutes</option>
+                <option>30 minutes</option>
+                <option>1 hour</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Data Storage Period</p>
+              <p class="text-xs text-gray-500">How long to keep historical data</p>
+            </div>
+            <div class="relative w-32">
+              <select class="appearance-none border rounded-button p-2 w-full text-sm pr-8 text-right">
+                <option>1 month</option>
+                <option>3 months</option>
+                <option selected>6 months</option>
+                <option>1 year</option>
+                <option>Forever</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Export Data</p>
+              <p class="text-xs text-gray-500">Download historical data</p>
+            </div>
+            <button class="px-3 py-1.5 bg-primary bg-opacity-10 text-primary text-xs rounded-button cursor-pointer">Export CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Maintenance Card -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h2 class="font-semibold mb-3">System Maintenance</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">System Version</p>
+              <p class="text-xs text-gray-500">Current: v2.4.1</p>
+            </div>
+            <button class="px-3 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-button cursor-pointer">Check Updates</button>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">System Diagnostics</p>
+              <p class="text-xs text-gray-500">Check system health</p>
+            </div>
+            <button class="px-3 py-1.5 bg-primary bg-opacity-10 text-primary text-xs rounded-button cursor-pointer">Run Test</button>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Maintenance Mode</p>
+              <p class="text-xs text-gray-500">Pause all operations</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="maintenance-mode" id="maintenance-mode" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+              <label for="maintenance-mode" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm">Factory Reset</p>
+              <p class="text-xs text-gray-500">Reset all settings</p>
+            </div>
+            <button class="px-3 py-1.5 bg-red-100 text-red-600 text-xs rounded-button cursor-pointer">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="fixed bottom-16 left-0 right-0 px-4 py-3 bg-white border-t border-gray-200 z-10">
+    <div class="flex space-x-3">
+      <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e" data-readdy="true" class="flex-1">
+        <button class="w-full py-2.5 bg-gray-100 text-gray-700 rounded-button cursor-pointer">Cancel</button>
+      </a>
+      <button id="save-settings" class="flex-1 py-2.5 bg-primary text-white rounded-button cursor-pointer">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tab Bar -->
+<div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-10">
+  <div class="grid grid-cols-4 h-14">
+    <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e" data-readdy="true" class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-dashboard-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">Dashboard</span>
+    </a>
+    <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/28358b65-8f1f-45ea-88d0-7ce0719e2fb7" data-readdy="true" class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-history-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">History</span>
+    </a>
+    <div class="flex flex-col items-center justify-center cursor-pointer text-primary">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-settings-3-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">Settings</span>
+    </div>
+    <div class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-notification-3-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">Alerts</span>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Message -->
+<div id="toast" class="fixed bottom-28 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg opacity-0 transition-opacity duration-300 pointer-events-none">
+  Settings saved successfully
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Tab switching
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tabName = button.getAttribute('data-tab');
+      
+      // Update active tab button
+      tabButtons.forEach(btn => {
+        btn.classList.remove('bg-primary', 'bg-opacity-10', 'text-primary');
+        btn.querySelector('div').classList.remove('text-primary');
+        btn.querySelector('div').classList.add('text-gray-600');
+        btn.querySelector('span').classList.remove('text-primary', 'font-medium');
+        btn.querySelector('span').classList.add('text-gray-600');
+      });
+      
+      button.classList.add('bg-primary', 'bg-opacity-10');
+      button.querySelector('div').classList.remove('text-gray-600');
+      button.querySelector('div').classList.add('text-primary');
+      button.querySelector('span').classList.remove('text-gray-600');
+      button.querySelector('span').classList.add('text-primary', 'font-medium');
+      
+      // Show active tab content
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.getElementById(`${tabName}-tab`).classList.add('active');
+    });
+  });
+  
+  // Range input value updates
+  const rangeInputs = document.querySelectorAll('input[type="range"]');
+  rangeInputs.forEach(input => {
+    input.addEventListener('input', function() {
+      const id = this.id;
+      let valueDisplay;
+      
+      if (id === 'light-intensity') {
+        valueDisplay = this.previousElementSibling.querySelector('span:last-child');
+        valueDisplay.textContent = `${this.value}%`;
+      } else if (id === 'water-level') {
+        valueDisplay = this.previousElementSibling.querySelector('span:last-child');
+        valueDisplay.textContent = `${this.value}%`;
+      } else if (id === 'nitrogen-level') {
+        valueDisplay = this.previousElementSibling.querySelector('span:last-child');
+        valueDisplay.textContent = `${this.value} ppm`;
+      } else if (id === 'phosphorus-level') {
+        valueDisplay = this.previousElementSibling.querySelector('span:last-child');
+        valueDisplay.textContent = `${this.value} ppm`;
+      } else if (id === 'potassium-level') {
+        valueDisplay = this.previousElementSibling.querySelector('span:last-child');
+        valueDisplay.textContent = `${this.value} ppm`;
+      }
+    });
+  });
+  
+  // Save settings button
+  document.getElementById('save-settings').addEventListener('click', function() {
+    const toast = document.getElementById('toast');
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    
+    setTimeout(() => {
+      toast.classList.remove('opacity-100');
+      toast.classList.add('opacity-0');
+    }, 3000);
+  });
+  
+  // Factory reset confirmation
+  const resetButton = document.querySelector('button.bg-red-100');
+  resetButton.addEventListener('click', function() {
+    if (confirm('Are you sure you want to reset all settings to factory defaults? This action cannot be undone.')) {
+      showToast('Factory reset completed');
+    }
+  });
+  
+  // Helper function to show toast messages
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.remove('opacity-0');
+    toast.classList.add('opacity-100');
+    
+    setTimeout(() => {
+      toast.classList.remove('opacity-100');
+      toast.classList.add('opacity-0');
+    }, 3000);
+  }
+});
+</script>
+</body>
+</html>
