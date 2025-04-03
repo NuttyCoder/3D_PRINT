@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerts - Hydroponic Garden Monitor</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4CAF50',secondary:'#FF7043'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+}
+.alert-item:last-child .alert-line {
+  display: none;
+}
+.alert-card {
+  transition: all 0.3s ease;
+}
+.alert-card:active {
+  transform: scale(0.98);
+}
+</style>
+</head>
+<body class="bg-[#FAFAFA] text-gray-800 h-screen">
+<!-- Nav Bar -->
+<div class="fixed top-0 w-full bg-white shadow-sm z-10">
+  <div class="flex items-center justify-between px-4 py-3">
+    <div class="flex items-center">
+      <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/28358b65-8f1f-45ea-88d0-7ce0719e2fb7" data-readdy="true" class="w-8 h-8 flex items-center justify-center cursor-pointer">
+        <i class="ri-arrow-left-line ri-lg"></i>
+      </a>
+      <h1 class="text-lg font-medium ml-3">Alerts</h1>
+    </div>
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 flex items-center justify-center cursor-pointer" id="filter-btn">
+        <i class="ri-filter-3-line ri-lg"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alert Categories and Content -->
+<div class="pt-16 pb-16 px-4">
+  <!-- Critical Alerts Section -->
+  <div class="mb-4">
+    <div class="flex items-center justify-between bg-white rounded-lg shadow-sm p-3 mb-2 cursor-pointer" id="critical-header">
+      <div class="flex items-center">
+        <div class="w-8 h-8 flex items-center justify-center bg-red-100 rounded-full mr-3">
+          <i class="ri-error-warning-fill text-red-500"></i>
+        </div>
+        <div>
+          <h2 class="font-medium">Critical Alerts</h2>
+          <p class="text-xs text-gray-500">Immediate attention required</p>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span class="bg-red-500 text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center mr-2">2</span>
+        <i class="ri-arrow-down-s-line" id="critical-icon"></i>
+      </div>
+    </div>
+    
+    <div id="critical-alerts" class="space-y-0">
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-red-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-water-flash-line text-red-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Water Pump Failure</h3>
+                  <p class="text-xs text-gray-500">Today, 09:23 AM</p>
+                </div>
+                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
+              </div>
+              <p class="text-sm mt-1">Water circulation system has stopped. Plants may be at risk of nutrient deficiency.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-red-500 text-white py-1.5 px-3 rounded-button">Resolve Now</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-red-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-temp-hot-line text-red-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Temperature Critical</h3>
+                  <p class="text-xs text-gray-500">Today, 08:45 AM</p>
+                </div>
+                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
+              </div>
+              <p class="text-sm mt-1">Temperature has reached 31.2°C, exceeding the safe threshold of 28°C for your plants.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-red-500 text-white py-1.5 px-3 rounded-button">Resolve Now</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Warning Alerts Section -->
+  <div class="mb-4">
+    <div class="flex items-center justify-between bg-white rounded-lg shadow-sm p-3 mb-2 cursor-pointer" id="warning-header">
+      <div class="flex items-center">
+        <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-full mr-3">
+          <i class="ri-alert-fill text-orange-500"></i>
+        </div>
+        <div>
+          <h2 class="font-medium">Warning Alerts</h2>
+          <p class="text-xs text-gray-500">Attention needed soon</p>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span class="bg-orange-500 text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center mr-2">3</span>
+        <i class="ri-arrow-down-s-line" id="warning-icon"></i>
+      </div>
+    </div>
+    
+    <div id="warning-alerts" class="space-y-0">
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-test-tube-line text-orange-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">pH Level Rising</h3>
+                  <p class="text-xs text-gray-500">Today, 07:10 AM</p>
+                </div>
+                <span class="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">Warning</span>
+              </div>
+              <p class="text-sm mt-1">pH level has increased to 6.8, approaching the upper limit for optimal growth.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-orange-500 text-white py-1.5 px-3 rounded-button">Adjust pH</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-seedling-line text-orange-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Nutrient Level Low</h3>
+                  <p class="text-xs text-gray-500">Yesterday, 06:30 PM</p>
+                </div>
+                <span class="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">Warning</span>
+              </div>
+              <p class="text-sm mt-1">Nitrogen levels are 15% below recommended values. Consider adding nutrients soon.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-orange-500 text-white py-1.5 px-3 rounded-button">Add Nutrients</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-orange-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-plant-line text-orange-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Mint Growth Slowing</h3>
+                  <p class="text-xs text-gray-500">Yesterday, 04:15 PM</p>
+                </div>
+                <span class="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">Warning</span>
+              </div>
+              <p class="text-sm mt-1">Mint plant growth rate has decreased by 30% over the past 3 days.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-orange-500 text-white py-1.5 px-3 rounded-button">Check Plant</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info Alerts Section -->
+  <div class="mb-4">
+    <div class="flex items-center justify-between bg-white rounded-lg shadow-sm p-3 mb-2 cursor-pointer" id="info-header">
+      <div class="flex items-center">
+        <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+          <i class="ri-information-fill text-blue-500"></i>
+        </div>
+        <div>
+          <h2 class="font-medium">Information</h2>
+          <p class="text-xs text-gray-500">System updates and notices</p>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span class="bg-blue-500 text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center mr-2">4</span>
+        <i class="ri-arrow-down-s-line" id="info-icon"></i>
+      </div>
+    </div>
+    
+    <div id="info-alerts" class="space-y-0">
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-refresh-line text-blue-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">System Update Available</h3>
+                  <p class="text-xs text-gray-500">Today, 06:00 AM</p>
+                </div>
+                <span class="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">Info</span>
+              </div>
+              <p class="text-sm mt-1">New firmware update v2.3.5 is available with improved sensor accuracy.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-blue-500 text-white py-1.5 px-3 rounded-button">Update Now</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-water-flash-line text-blue-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Water Change Scheduled</h3>
+                  <p class="text-xs text-gray-500">Yesterday, 09:45 PM</p>
+                </div>
+                <span class="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">Info</span>
+              </div>
+              <p class="text-sm mt-1">Automated water change scheduled for tomorrow at 10:00 AM.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-blue-500 text-white py-1.5 px-3 rounded-button">Reschedule</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-plant-line text-blue-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Basil Ready for Harvest</h3>
+                  <p class="text-xs text-gray-500">Yesterday, 02:30 PM</p>
+                </div>
+                <span class="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">Info</span>
+              </div>
+              <p class="text-sm mt-1">Your basil plants have reached optimal size for harvesting.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-blue-500 text-white py-1.5 px-3 rounded-button">View Guide</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert-item relative">
+        <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+          <div class="flex items-start">
+            <div class="relative">
+              <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+                <i class="ri-sun-line text-blue-500"></i>
+              </div>
+              <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm font-medium">Light Schedule Optimized</h3>
+                  <p class="text-xs text-gray-500">April 2, 10:15 AM</p>
+                </div>
+                <span class="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">Info</span>
+              </div>
+              <p class="text-sm mt-1">Light schedule has been automatically optimized for current plant growth stages.</p>
+              <div class="flex items-center justify-between mt-3">
+                <button class="text-xs bg-blue-500 text-white py-1.5 px-3 rounded-button">View Details</button>
+                <div class="flex space-x-2">
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-information-line text-gray-500"></i>
+                  </button>
+                  <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                    <i class="ri-close-line text-gray-500"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Resolved Alerts Section -->
+  <div class="mb-4">
+    <div class="flex items-center justify-between bg-white rounded-lg shadow-sm p-3 mb-2 cursor-pointer" id="resolved-header">
+      <div class="flex items-center">
+        <div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full mr-3">
+          <i class="ri-checkbox-circle-fill text-green-500"></i>
+        </div>
+        <div>
+          <h2 class="font-medium">Resolved</h2>
+          <p class="text-xs text-gray-500">Previously fixed issues</p>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span class="bg-gray-200 text-gray-600 text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center mr-2">8</span>
+        <i class="ri-arrow-right-s-line" id="resolved-icon"></i>
+      </div>
+    </div>
+    
+    <div id="resolved-alerts" class="space-y-0 hidden">
+      <!-- Resolved alerts will be shown here when expanded -->
+    </div>
+  </div>
+  
+  <!-- Empty State (Hidden by default) -->
+  <div id="empty-state" class="hidden flex flex-col items-center justify-center py-10">
+    <div class="w-32 h-32 mb-4">
+      <img src="https://public.readdy.ai/ai/img_res/ef295bb9b8de7411fe5ce530c574fa0f.jpg" alt="All Clear" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-medium text-gray-800 mb-1">All Clear!</h3>
+    <p class="text-sm text-gray-500 mb-4 text-center">Your hydroponic garden is running smoothly with no active alerts.</p>
+    <button class="text-sm bg-primary text-white py-2 px-4 rounded-button">View Resolved Alerts</button>
+  </div>
+</div>
+
+<!-- Tab Bar -->
+<div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-10">
+  <div class="grid grid-cols-4 h-14">
+    <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/9e0af3e3-f0fc-405c-9cf8-edcf60cf140e" data-readdy="true" class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-dashboard-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">Dashboard</span>
+    </a>
+    <a href="https://readdy.ai/home/18e7104e-a955-4e08-b2f7-651f357b4e91/28358b65-8f1f-45ea-88d0-7ce0719e2fb7" data-readdy="true" class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-history-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">History</span>
+    </a>
+    <div class="flex flex-col items-center justify-center cursor-pointer text-gray-500">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-settings-3-line"></i>
+      </div>
+      <span class="text-xs mt-0.5">Settings</span>
+    </div>
+    <div class="flex flex-col items-center justify-center cursor-pointer text-primary">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-notification-3-fill"></i>
+      </div>
+      <span class="text-xs mt-0.5">Alerts</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Toggle alert sections
+document.getElementById('critical-header').addEventListener('click', function() {
+  toggleSection('critical-alerts', 'critical-icon');
+});
+
+document.getElementById('warning-header').addEventListener('click', function() {
+  toggleSection('warning-alerts', 'warning-icon');
+});
+
+document.getElementById('info-header').addEventListener('click', function() {
+  toggleSection('info-alerts', 'info-icon');
+});
+
+document.getElementById('resolved-header').addEventListener('click', function() {
+  toggleSection('resolved-alerts', 'resolved-icon');
+  
+  // If resolved section is empty, load content
+  const resolvedSection = document.getElementById('resolved-alerts');
+  if (resolvedSection.classList.contains('hidden')) {
+    // Icon is pointing right, section is closed
+    document.getElementById('resolved-icon').className = 'ri-arrow-down-s-line';
+  } else {
+    // Icon is pointing down, section is open
+    document.getElementById('resolved-icon').className = 'ri-arrow-right-s-line';
+    
+    // Check if content is already loaded
+    if (resolvedSection.children.length === 0) {
+      loadResolvedAlerts();
+    }
+  }
+});
+
+// Filter button
+document.getElementById('filter-btn').addEventListener('click', function() {
+  showFilterModal();
+});
+
+// Add click event to all alert cards
+const alertCards = document.querySelectorAll('.alert-card');
+alertCards.forEach(card => {
+  card.addEventListener('click', function(e) {
+    // Don't show details if clicking on a button
+    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+      return;
+    }
+    
+    const alertTitle = this.querySelector('h3').textContent;
+    showAlertDetails(alertTitle, this);
+  });
+});
+
+// Add click events to info buttons
+const infoButtons = document.querySelectorAll('.alert-card .ri-information-line');
+infoButtons.forEach(button => {
+  button.closest('button').addEventListener('click', function(e) {
+    e.stopPropagation();
+    const card = this.closest('.alert-card');
+    const alertTitle = card.querySelector('h3').textContent;
+    showAlertDetails(alertTitle, card);
+  });
+});
+
+// Add click events to dismiss buttons
+const dismissButtons = document.querySelectorAll('.alert-card .ri-close-line');
+dismissButtons.forEach(button => {
+  button.closest('button').addEventListener('click', function(e) {
+    e.stopPropagation();
+    const card = this.closest('.alert-item');
+    dismissAlert(card);
+  });
+});
+
+// Add click events to action buttons (Resolve Now, etc.)
+const actionButtons = document.querySelectorAll('.alert-card button:first-of-type');
+actionButtons.forEach(button => {
+  button.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const card = this.closest('.alert-item');
+    const alertTitle = card.querySelector('h3').textContent;
+    const buttonText = this.textContent.trim();
+    
+    if (buttonText === 'Resolve Now') {
+      showResolveModal(alertTitle, card);
+    } else {
+      showToast(`Action "${buttonText}" initiated for "${alertTitle}"`);
+    }
+  });
+});
+
+// Helper Functions
+function toggleSection(sectionId, iconId) {
+  const section = document.getElementById(sectionId);
+  const icon = document.getElementById(iconId);
+  
+  section.classList.toggle('hidden');
+  
+  if (section.classList.contains('hidden')) {
+    icon.className = 'ri-arrow-right-s-line';
+  } else {
+    icon.className = 'ri-arrow-down-s-line';
+  }
+}
+
+function loadResolvedAlerts() {
+  const resolvedSection = document.getElementById('resolved-alerts');
+  
+  // Sample resolved alerts
+  const resolvedAlerts = [
+    {
+      icon: 'ri-water-flash-line',
+      color: 'blue',
+      title: 'Water Level Low',
+      time: 'April 2, 08:15 AM',
+      description: 'Water reservoir level was below 20%. System has been refilled.',
+      resolvedBy: 'System'
+    },
+    {
+      icon: 'ri-test-tube-line',
+      color: 'purple',
+      title: 'pH Level Adjusted',
+      time: 'April 1, 04:30 PM',
+      description: 'pH level was 7.2 and has been automatically adjusted to 6.2.',
+      resolvedBy: 'System'
+    },
+    {
+      icon: 'ri-seedling-line',
+      color: 'green',
+      title: 'Nutrient Imbalance',
+      time: 'March 31, 11:20 AM',
+      description: 'Phosphorus levels were low. Nutrients have been balanced.',
+      resolvedBy: 'User'
+    }
+  ];
+  
+  // Create HTML for each resolved alert
+  resolvedAlerts.forEach(alert => {
+    const alertItem = document.createElement('div');
+    alertItem.className = 'alert-item relative';
+    alertItem.innerHTML = `
+      <div class="alert-card bg-white rounded-lg shadow-sm p-4 mb-2 cursor-pointer">
+        <div class="flex items-start">
+          <div class="relative">
+            <div class="w-8 h-8 flex items-center justify-center bg-${alert.color}-100 rounded-full mt-0.5 mr-3 flex-shrink-0 z-10">
+              <i class="${alert.icon} text-${alert.color}-500"></i>
+            </div>
+            <div class="alert-line absolute top-8 bottom-0 left-4 w-0.5 bg-gray-200 -z-10"></div>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-medium">${alert.title}</h3>
+                <p class="text-xs text-gray-500">${alert.time}</p>
+              </div>
+              <span class="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">Resolved</span>
+            </div>
+            <p class="text-sm mt-1">${alert.description}</p>
+            <div class="flex items-center justify-between mt-3">
+              <div class="text-xs text-gray-500">
+                <span>Resolved by: ${alert.resolvedBy}</span>
+              </div>
+              <div class="flex space-x-2">
+                <button class="w-7 h-7 flex items-center justify-center bg-gray-100 rounded-full">
+                  <i class="ri-information-line text-gray-500"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    resolvedSection.appendChild(alertItem);
+  });
+  
+  // Add more button
+  const moreButton = document.createElement('button');
+  moreButton.className = 'w-full mt-2 py-2 text-sm text-primary border border-primary rounded-button flex items-center justify-center cursor-pointer';
+  moreButton.innerHTML = 'Load more resolved alerts <i class="ri-arrow-down-s-line ml-1"></i>';
+  moreButton.addEventListener('click', function() {
+    showToast('Loading more alerts...');
+  });
+  
+  resolvedSection.appendChild(moreButton);
+  
+  // Add event listeners to the newly created elements
+  const newInfoButtons = resolvedSection.querySelectorAll('.ri-information-line');
+  newInfoButtons.forEach(button => {
+    button.closest('button').addEventListener('click', function(e) {
+      e.stopPropagation();
+      const card = this.closest('.alert-card');
+      const alertTitle = card.querySelector('h3').textContent;
+      showAlertDetails(alertTitle, card, true);
+    });
+  });
+  
+  const newAlertCards = resolvedSection.querySelectorAll('.alert-card');
+  newAlertCards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+        return;
+      }
+      
+      const alertTitle = this.querySelector('h3').textContent;
+      showAlertDetails(alertTitle, this, true);
+    });
+  });
+}
+
+function dismissAlert(alertItem) {
+  // Animate the alert removal
+  alertItem.style.transition = 'opacity 0.3s, transform 0.3s';
+  alertItem.style.opacity = '0';
+  alertItem.style.transform = 'translateX(100px)';
+  
+  setTimeout(() => {
+    // Get the parent section
+    const parentSection = alertItem.closest('[id$="-alerts"]');
+    
+    // Remove the alert
+    alertItem.remove();
+    
+    // Update the count in the header
+    const sectionId = parentSection.id;
+    const categoryId = sectionId.replace('-alerts', '');
+    const countElement = document.querySelector(`#${categoryId}-header .rounded-full`);
+    
+    if (countElement) {
+      const currentCount = parseInt(countElement.textContent);
+      if (currentCount > 1) {
+        countElement.textContent = currentCount - 1;
+      } else {
+        // If this was the last alert, update the header
+        countElement.textContent = '0';
+        countElement.classList.remove('bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        countElement.classList.add('bg-gray-200', 'text-gray-600');
+        
+        // Check if all sections are empty
+        checkEmptyState();
+      }
+    }
+    
+    showToast('Alert dismissed');
+  }, 300);
+}
+
+function checkEmptyState() {
+  const criticalCount = document.querySelectorAll('#critical-alerts .alert-item').length;
+  const warningCount = document.querySelectorAll('#warning-alerts .alert-item').length;
+  const infoCount = document.querySelectorAll('#info-alerts .alert-item').length;
+  
+  if (criticalCount === 0 && warningCount === 0 && infoCount === 0) {
+    // Show empty state
+    document.getElementById('empty-state').classList.remove('hidden');
+  }
+}
+
+function showFilterModal() {
+  // Create modal container
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 flex items-end justify-center z-50 p-4';
+  
+  // Create backdrop
+  const backdrop = document.createElement('div');
+  backdrop.className = 'absolute inset-0 bg-black bg-opacity-50';
+  backdrop.addEventListener('click', () => modal.remove());
+  
+  // Create modal content
+  const content = document.createElement('div');
+  content.className = 'bg-white rounded-t-lg shadow-lg w-full max-w-md relative z-10 p-5';
+  
+  content.innerHTML = `
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold">Filter Alerts</h3>
+      <button class="text-gray-500 cursor-pointer">
+        <i class="ri-close-line ri-lg"></i>
+      </button>
+    </div>
+    
+    <div class="mb-4">
+      <h4 class="text-sm font-medium mb-2">Alert Type</h4>
+      <div class="grid grid-cols-3 gap-2">
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Critical</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Warning</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Info</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <h4 class="text-sm font-medium mb-2">Status</h4>
+      <div class="grid grid-cols-3 gap-2">
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Unread</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2">
+          <span class="text-sm">Read</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2">
+          <span class="text-sm">Resolved</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <h4 class="text-sm font-medium mb-2">System Component</h4>
+      <div class="grid grid-cols-2 gap-2">
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Water System</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Nutrients</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Temperature</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">pH Level</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Lighting</span>
+        </label>
+        <label class="flex items-center p-2 border border-gray-200 rounded cursor-pointer">
+          <input type="checkbox" class="mr-2" checked>
+          <span class="text-sm">Plants</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <h4 class="text-sm font-medium mb-2">Date Range</h4>
+      <div class="flex items-center space-x-2">
+        <div class="flex-1">
+          <label class="text-xs text-gray-500">From</label>
+          <input type="date" class="w-full p-2 border border-gray-200 rounded text-sm" value="2025-03-30">
+        </div>
+        <div class="flex-1">
+          <label class="text-xs text-gray-500">To</label>
+          <input type="date" class="w-full p-2 border border-gray-200 rounded text-sm" value="2025-04-03">
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex space-x-2">
+      <button class="flex-1 py-2 text-sm border border-gray-300 rounded-button cursor-pointer">Reset</button>
+      <button class="flex-1 py-2 text-sm bg-primary text-white rounded-button cursor-pointer">Apply Filters</button>
+    </div>
+  `;
+  
+  // Add content and backdrop to modal
+  modal.appendChild(backdrop);
+  modal.appendChild(content);
+  
+  // Add modal to body
+  document.body.appendChild(modal);
+  
+  // Add event listener to close button
+  content.querySelector('button').addEventListener('click', () => modal.remove());
+  
+  // Add event listener to apply button
+  const applyButton = content.querySelector('.bg-primary');
+  applyButton.addEventListener('click', () => {
+    showToast('Filters applied');
+    modal.remove();
+  });
+  
+  // Add event listener to reset button
+  const resetButton = content.querySelector('.border-gray-300');
+  resetButton.addEventListener('click', () => {
+    const checkboxes = content.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = true;
+    });
+    
+    const dateInputs = content.querySelectorAll('input[type="date"]');
+    dateInputs[0].value = '2025-03-30';
+    dateInputs[1].value = '2025-04-03';
+    
+    showToast('Filters reset');
+  });
+}
+
+function showAlertDetails(title, alertCard, isResolved = false) {
+  // Get alert details
+  const description = alertCard.querySelector('p:nth-of-type(2)').textContent;
+  const timestamp = alertCard.querySelector('p:nth-of-type(1)').textContent;
+  const severity = alertCard.querySelector('span.rounded-full').textContent;
+  const iconClass = alertCard.querySelector('i').className.split(' ')[0];
+  
+  // Create modal container
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+  
+  // Create backdrop
+  const backdrop = document.createElement('div');
+  backdrop.className = 'absolute inset-0 bg-black bg-opacity-50';
+  backdrop.addEventListener('click', () => modal.remove());
+  
+  // Determine color based on severity
+  let colorClass = 'blue';
+  if (severity === 'Critical') colorClass = 'red';
+  else if (severity === 'Warning') colorClass = 'orange';
+  else if (severity === 'Resolved') colorClass = 'green';
+  
+  // Create modal content
+  const content = document.createElement('div');
+  content.className = 'bg-white rounded-lg shadow-lg w-full max-w-md relative z-10';
+  
+  content.innerHTML = `
+    <div class="p-5">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 flex items-center justify-center bg-${colorClass}-100 rounded-full mr-3">
+          <i class="${iconClass} text-${colorClass}-500 ri-lg"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold">${title}</h3>
+          <p class="text-sm text-gray-500">${timestamp}</p>
+        </div>
+        <button class="absolute top-4 right-4 text-gray-500 cursor-pointer">
+          <i class="ri-close-line ri-lg"></i>
+        </button>
+      </div>
+      
+      <div class="mb-4">
+        <span class="inline-block bg-${colorClass}-500 text-white text-xs px-2 py-0.5 rounded-full mb-2">${severity}</span>
+        <p class="text-sm">${description}</p>
+      </div>
+      
+      <div class="bg-gray-50 rounded-lg p-4 mb-4">
+        <h4 class="text-sm font-medium mb-2">Affected System</h4>
+        <div class="flex items-center text-sm">
+          <i class="${iconClass} mr-2 text-${colorClass}-500"></i>
+          <span>${getSystemFromIcon(iconClass)}</span>
+        </div>
+        
+        <h4 class="text-sm font-medium mt-3 mb-2">Sensor Data</h4>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          ${getSensorDataFromTitle(title)}
+        </div>
+      </div>
+      
+      ${isResolved ? getResolvedContent() : getRecommendedActions(title, severity)}
+    </div>
+    
+    <div class="bg-gray-50 p-4 rounded-b-lg">
+      <h4 class="text-sm font-medium mb-2">Alert History</h4>
+      <div class="text-xs text-gray-500">
+        <div class="flex items-center justify-between mb-1">
+          <span>Created</span>
+          <span>${timestamp}</span>
+        </div>
+        ${isResolved ? `
+        <div class="flex items-center justify-between mb-1">
+          <span>Resolved</span>
+          <span>April 2, 2025, 10:30 AM</span>
+        </div>
+        ` : ''}
+        <div class="flex items-center justify-between">
+          <span>Similar alerts</span>
+          <span>3 in the last 30 days</span>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Add content and backdrop to modal
+  modal.appendChild(backdrop);
+  modal.appendChild(content);
+  
+  // Add modal to body
+  document.body.appendChild(modal);
+  
+  // Add event listener to close button
+  content.querySelector('button').addEventListener('click', () => modal.remove());
+  
+  // Add event listeners to action buttons if present
+  const actionButton = content.querySelector('.bg-primary');
+  if (actionButton) {
+    actionButton.addEventListener('click', () => {
+      if (actionButton.textContent.includes('Resolve')) {
+        showResolveModal(title, alertCard.closest('.alert-item'));
+      } else {
+        showToast(`Action "${actionButton.textContent.trim()}" initiated`);
+      }
+      modal.remove();
+    });
+  }
+  
+  // Add event listener to dismiss button if present
+  const dismissButton = content.querySelector('.border-gray-300');
+  if (dismissButton) {
+    dismissButton.addEventListener('click', () => {
+      dismissAlert(alertCard.closest('.alert-item'));
+      modal.remove();
+    });
+  }
+}
+
+function getSystemFromIcon(iconClass) {
+  if (iconClass.includes('water')) return 'Water System';
+  if (iconClass.includes('temp')) return 'Temperature Control';
+  if (iconClass.includes('test-tube')) return 'pH Management';
+  if (iconClass.includes('seedling')) return 'Nutrient System';
+  if (iconClass.includes('plant')) return 'Plant Health';
+  if (iconClass.includes('sun')) return 'Lighting System';
+  if (iconClass.includes('refresh')) return 'System Software';
+  return 'General System';
+}
+
+function getSensorDataFromTitle(title) {
+  if (title.includes('Water Pump')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Pump Status</p>
+        <p class="font-medium">Inactive</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Last Active</p>
+        <p class="font-medium">2 hours ago</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Water Flow</p>
+        <p class="font-medium">0 L/min</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Power</p>
+        <p class="font-medium">Disconnected</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('Temperature')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Current</p>
+        <p class="font-medium">31.2°C</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Target</p>
+        <p class="font-medium">24.0°C</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Humidity</p>
+        <p class="font-medium">45%</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Trend</p>
+        <p class="font-medium">Rising ↑</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('pH')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Current pH</p>
+        <p class="font-medium">6.8</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Target pH</p>
+        <p class="font-medium">6.0 - 6.5</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Last Adjusted</p>
+        <p class="font-medium">Yesterday</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Trend</p>
+        <p class="font-medium">Rising ↑</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('Nutrient')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Nitrogen (N)</p>
+        <p class="font-medium">178 ppm</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Target N</p>
+        <p class="font-medium">210 ppm</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Phosphorus (P)</p>
+        <p class="font-medium">38 ppm</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Potassium (K)</p>
+        <p class="font-medium">152 ppm</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('Mint') || title.includes('Growth')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Growth Rate</p>
+        <p class="font-medium">0.4 cm/day</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Expected</p>
+        <p class="font-medium">0.6 cm/day</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Current Height</p>
+        <p class="font-medium">10.8 cm</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Leaf Color</p>
+        <p class="font-medium">Light Green</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('System Update')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Current Version</p>
+        <p class="font-medium">v2.3.4</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">New Version</p>
+        <p class="font-medium">v2.3.5</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Size</p>
+        <p class="font-medium">12.4 MB</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Priority</p>
+        <p class="font-medium">Medium</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('Water Change')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Last Change</p>
+        <p class="font-medium">7 days ago</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Schedule</p>
+        <p class="font-medium">Weekly</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Water Quality</p>
+        <p class="font-medium">Fair</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Volume</p>
+        <p class="font-medium">10 L</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('Basil')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Growth Stage</p>
+        <p class="font-medium">Mature</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Height</p>
+        <p class="font-medium">18.5 cm</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Days Growing</p>
+        <p class="font-medium">28 days</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Health</p>
+        <p class="font-medium">Excellent</p>
+      </div>
+    `;
+  }
+  
+  if (title.includes('Light')) {
+    return `
+      <div>
+        <p class="text-xs text-gray-500">Light Schedule</p>
+        <p class="font-medium">16/8 hours</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Intensity</p>
+        <p class="font-medium">80%</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Spectrum</p>
+        <p class="font-medium">Full</p>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500">Energy Use</p>
+        <p class="font-medium">45W</p>
+      </div>
+    `;
+  }
+  
+  // Default sensor data
+  return `
+    <div>
+      <p class="text-xs text-gray-500">Status</p>
+      <p class="font-medium">Alert</p>
+    </div>
+    <div>
+      <p class="text-xs text-gray-500">Time</p>
+      <p class="font-medium">Recent</p>
+    </div>
+    <div>
+      <p class="text-xs text-gray-500">Priority</p>
+      <p class="font-medium">Medium</p>
+    </div>
+    <div>
+      <p class="text-xs text-gray-500">System</p>
+      <p class="font-medium">Affected</p>
+    </div>
+  `;
+}
+
+function getRecommendedActions(title, severity) {
+  let actions = '';
+  
+  if (title.includes('Water Pump')) {
+    actions = `
+      <li class="mb-1">Check power connection to the pump</li>
+      <li class="mb-1">Inspect for physical blockages in the system</li>
+      <li class="mb-1">Verify water level in reservoir</li>
+      <li>Restart the system if necessary</li>
+    `;
+  } else if (title.includes('Temperature')) {
+    actions = `
+      <li class="mb-1">Check ventilation system is working properly</li>
+      <li class="mb-1">Ensure grow lights are not too close to plants</li>
+      <li class="mb-1">Verify cooling system is operational</li>
+      <li>Consider relocating system if in direct sunlight</li>
+    `;
+  } else if (title.includes('pH')) {
+    actions = `
+      <li class="mb-1">Add pH down solution to lower pH level</li>
+      <li class="mb-1">Check calibration of pH sensor</li>
+      <li class="mb-1">Monitor for 2 hours after adjustment</li>
+      <li>Consider water change if persistent</li>
+    `;
+  } else if (title.includes('Nutrient')) {
+    actions = `
+      <li class="mb-1">Add recommended nutrient solution</li>
+      <li class="mb-1">Check nutrient solution mixing ratio</li>
+      <li class="mb-1">Verify nutrient pump operation</li>
+      <li>Monitor plant response after adjustment</li>
+    `;
+  } else if (title.includes('Mint') || title.includes('Growth')) {
+    actions = `
+      <li class="mb-1">Inspect plant for signs of disease or pests</li>
+      <li class="mb-1">Check light exposure is adequate</li>
+      <li class="mb-1">Verify nutrient levels are appropriate</li>
+      <li>Consider pruning to encourage new growth</li>
+    `;
+  } else {
+    actions = `
+      <li class="mb-1">Review system settings</li>
+      <li class="mb-1">Check related components</li>
+      <li class="mb-1">Monitor for changes</li>
+      <li>Contact support if issue persists</li>
+    `;
+  }
+  
+  return `
+    <div class="mb-4">
+      <h4 class="text-sm font-medium mb-2">Recommended Actions</h4>
+      <ul class="text-sm list-disc pl-5">
+        ${actions}
+      </ul>
+    </div>
+    
+    <div class="flex space-x-2">
+      <button class="flex-1 py-2 text-sm border border-gray-300 rounded-button cursor-pointer">Dismiss</button>
+      <button class="flex-1 py-2 text-sm bg-primary text-white rounded-button cursor-pointer">
+        ${severity === 'Critical' ? 'Resolve Now' : 'Take Action'}
+      </button>
+    </div>
+  `;
+}
+
+function getResolvedContent() {
+  return `
+    <div class="mb-4">
+      <h4 class="text-sm font-medium mb-2">Resolution Details</h4>
+      <div class="text-sm">
+        <p class="mb-2">This alert was automatically resolved by the system after the issue was corrected.</p>
+        <div class="flex items-center text-green-500 mb-2">
+          <i class="ri-check-line mr-1"></i>
+          <span>Issue successfully resolved</span>
+        </div>
+        <p class="text-xs text-gray-500">No further action is required.</p>
+      </div>
+    </div>
+    
+    <div class="flex">
+      <button class="w-full py-2 text-sm bg-primary text-white rounded-button cursor-pointer">Close</button>
+    </div>
+  `;
+}
+
+function showResolveModal(title, alertItem) {
+  // Create modal container
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+  
+  // Create backdrop
+  const backdrop = document.createElement('div');
+  backdrop.className = 'absolute inset-0 bg-black bg-opacity-50';
+  backdrop.addEventListener('click', () => modal.remove());
+  
+  // Create modal content
+  const content = document.createElement('div');
+  content.className = 'bg-white rounded-lg shadow-lg w-full max-w-md relative z-10 p-5';
+  
+  content.innerHTML = `
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold">Resolve Alert</h3>
+      <button class="text-gray-500 cursor-pointer">
+        <i class="ri-close-line ri-lg"></i>
+      </button>
+    </div>
+    
+    <p class="text-sm mb-4">How would you like to resolve the alert: "${title}"?</p>
+    
+    <div class="space-y-2 mb-4">
+      <label class="flex items-center p-3 border border-gray-200 rounded cursor-pointer">
+        <input type="radio" name="resolution" class="mr-3" checked>
+        <div>
+          <h4 class="text-sm font-medium">Automatic Resolution</h4>
+          <p class="text-xs text-gray-500">Let the system attempt to resolve the issue automatically.</p>
+        </div>
+      </label>
+      
+      <label class="flex items-center p-3 border border-gray-200 rounded cursor-pointer">
+        <input type="radio" name="resolution" class="mr-3">
+        <div>
+          <h4 class="text-sm font-medium">Manual Resolution</h4>
+          <p class="text-xs text-gray-500">I've fixed the issue manually and want to mark it as resolved.</p>
+        </div>
+      </label>
+      
+      <label class="flex items-center p-3 border border-gray-200 rounded cursor-pointer">
+        <input type="radio" name="resolution" class="mr-3">
+        <div>
+          <h4 class="text-sm font-medium">Dismiss Alert</h4>
+          <p class="text-xs text-gray-500">Dismiss this alert without resolving the issue.</p>
+        </div>
+      </label>
+    </div>
+    
+    <div class="mb-4">
+      <label class="text-sm font-medium">Add a note (optional)</label>
+      <textarea class="w-full mt-1 p-2 border border-gray-200 rounded text-sm" rows="2" placeholder="Enter details about how you resolved the issue..."></textarea>
+    </div>
+    
+    <div class="flex space-x-2">
+      <button class="flex-1 py-2 text-sm border border-gray-300 rounded-button cursor-pointer">Cancel</button>
+      <button class="flex-1 py-2 text-sm bg-primary text-white rounded-button cursor-pointer">Confirm</button>
+    </div>
+  `;
+  
+  // Add content and backdrop to modal
+  modal.appendChild(backdrop);
+  modal.appendChild(content);
+  
+  // Add modal to body
+  document.body.appendChild(modal);
+  
+  // Add event listener to close and cancel buttons
+  const closeButtons = content.querySelectorAll('button:not(.bg-primary)');
+  closeButtons.forEach(button => {
+    button.addEventListener('click', () => modal.remove());
+  });
+  
+  // Add event listener to confirm button
+  const confirmButton = content.querySelector('.bg-primary');
+  confirmButton.addEventListener('click', () => {
+    dismissAlert(alertItem);
+    showToast('Alert resolved successfully');
+    modal.remove();
+  });
+}
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 text-sm';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+    setTimeout(() => {
+      document.body.removeChild(toast);
+    }, 300);
+  }, 3000);
+}
+
+// Initialize sections (all open by default)
+document.addEventListener('DOMContentLoaded', function() {
+  // Set all icons to down arrow
+  document.getElementById('critical-icon').className = 'ri-arrow-down-s-line';
+  document.getElementById('warning-icon').className = 'ri-arrow-down-s-line';
+  document.getElementById('info-icon').className = 'ri-arrow-down-s-line';
+  document.getElementById('resolved-icon').className = 'ri-arrow-right-s-line';
+  
+  // Hide resolved section by default
+  document.getElementById('resolved-alerts').classList.add('hidden');
+});
+</script>
+</body>
+</html>
